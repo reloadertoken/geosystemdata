@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".mPrincipalActivity" />
         <activity android:name=".Helico_Materiales.HelicoMaterialesActivity" />
-        <activity android:name=".Helico_Materiales.Tomos.Tomo1Activity"></activity>
+        <activity android:name=".Helico_Materiales.Tomos.Tomo1MenuActivity" />
+        <activity android:name=".Helico_Materiales.Tomos.Materias.CienciasActivity"></activity>
     </application>
 
 </manifest>

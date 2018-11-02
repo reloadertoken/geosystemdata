@@ -22,23 +22,12 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="265dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </FrameLayout>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fb_logo"
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="145dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="250dp"
+        android:layout_marginEnd="270dp"
         android:layout_marginTop="200dp"
         android:src="@drawable/logo"
         app:backgroundTint="@color/colorPrimaryDark"
@@ -96,17 +85,18 @@
             android:id="@+id/edt_contrasenia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:layout_below="@+id/edt_usuario"
             android:hint="Contraseña" />
 
 
         <Button
             android:id="@+id/btn_ingresar"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
             android:layout_below="@+id/edt_contrasenia"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/sh_cuadro"
             android:text="Ingresar"
             android:textColor="@android:color/white"
