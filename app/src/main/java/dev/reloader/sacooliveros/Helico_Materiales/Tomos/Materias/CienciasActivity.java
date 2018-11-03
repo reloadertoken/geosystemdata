@@ -1,21 +1,32 @@
 package dev.reloader.sacooliveros.Helico_Materiales.Tomos.Materias;
 
+import android.graphics.Bitmap;
+import android.os.ParcelFileDescriptor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.shockwave.pdfium.PdfDocument;
+import com.shockwave.pdfium.PdfiumCore;
 
+import java.io.IOException;
 import java.util.List;
 
 import dev.reloader.sacooliveros.R;
 
-public class CienciasActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener {
+public class CienciasActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener, View.OnClickListener, Validator.ValidationListener {
 
     PDFView pdfView;
     String pdfFileName;
@@ -23,6 +34,14 @@ public class CienciasActivity extends AppCompatActivity implements OnPageChangeL
     private static final String TAG = "PDFSaco";
     Integer pageNumber = 0;
     Integer pagecontador=0;
+
+    @NotEmpty
+    EditText edtbuscar;
+
+    ImageView img_buscar;
+
+    Validator validator;
+
 
 
     @Override
@@ -33,17 +52,25 @@ public class CienciasActivity extends AppCompatActivity implements OnPageChangeL
         pdfView=  findViewById(R.id.pdfView);
         displayFromAsset(SAMPLE_FILE);
 
+        edtbuscar= findViewById(R.id.edt_buscar);
+        img_buscar= findViewById(R.id.img_buscar);
+
+        img_buscar.setOnClickListener(this);
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
     }
 
 
     private void displayFromAsset(String assetFileName) {
-        pdfFileName = assetFileName;
 
+        pdfFileName = assetFileName;
         pdfView.fromAsset(SAMPLE_FILE)
                 .defaultPage(pageNumber)
                 .onPageChange(this)
                 //.enableDoubletap(true)
-                //.swipeHorizontal(true)
+                .swipeHorizontal(true)
                 .pageSnap(true)
                 .pageFling(true)
                 .enableAnnotationRendering(true)
@@ -108,4 +135,61 @@ public class CienciasActivity extends AppCompatActivity implements OnPageChangeL
 
     }
 
-}
+    @Override
+    public void onClick(View view) {
+
+        validator.validate();
+
+
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+
+
+
+            int dato= Integer.parseInt(edtbuscar.getText().toString());
+
+
+            int numpag = pdfView.getPageCount(); // # de paginas en total
+
+            if(dato<=numpag)
+            {
+                pdfView.fromAsset(SAMPLE_FILE)
+                        .defaultPage(dato)
+                        .swipeHorizontal(true)
+                        .load();
+
+
+                //pdfView.jumpTo(int page)
+            }
+            else
+            {
+                // Toast.makeText(getApplicationContext(), "# paginas"+dato,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Ingrese  un valor Existente",Toast.LENGTH_SHORT).show();
+
+
+            }
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            // Display error messages ;)
+            if (view instanceof EditText) {
+                ((EditText) view).setError("ingrese un valor");
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+
+    }
+
